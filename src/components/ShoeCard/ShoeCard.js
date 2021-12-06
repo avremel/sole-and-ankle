@@ -36,14 +36,21 @@ const ShoeCard = ({
       <Wrapper>
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
+          {variant === 'on-sale' && (
+            <Tag style={{ '--background-color': COLORS.primary }}>Sale</Tag>
+          )}
+          {variant === 'new-release' && (
+            <Tag style={{ '--background-color': COLORS.secondary }}>Just released!</Tag>
+          )}
         </ImageWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
-          <Price>{formatPrice(price)}</Price>
+          <Price style={{ textDecoration: variant === 'on-sale' ? 'line-through' : '' }}>{formatPrice(price)}</Price>
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
+          {variant === 'on-sale' && <SalePrice>{formatPrice(salePrice)}</SalePrice>}
         </Row>
       </Wrapper>
     </Link>
@@ -53,6 +60,7 @@ const ShoeCard = ({
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
+  flex: 1 0 400px;
 `;
 
 const Wrapper = styled.article``;
@@ -61,10 +69,15 @@ const ImageWrapper = styled.div`
   position: relative;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  display: block;
+  width: 100%;
+`;
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Name = styled.h3`
@@ -81,6 +94,17 @@ const ColorInfo = styled.p`
 const SalePrice = styled.span`
   font-weight: ${WEIGHTS.medium};
   color: ${COLORS.primary};
+`;
+
+const Tag = styled.div`
+  position: absolute;
+  top: 16px;
+  right: -4px;
+  width: fit-content;
+  background-color: var(--background-color);
+  color: white;
+  padding: 12px;
+  font-weight: 800;
 `;
 
 export default ShoeCard;
